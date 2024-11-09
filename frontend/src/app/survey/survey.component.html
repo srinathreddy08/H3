@@ -1,0 +1,33 @@
+<app-navbar> </app-navbar>
+<div class="container">
+  <div class="survey-container" *ngIf="!surveyCompleted"> 
+    <h2>{{ surveyTitle }}</h2>
+    
+    <div *ngFor="let question of questions; let i = index">
+      <ng-container *ngIf="currentQuestionIndex === i">
+        <h3>{{ question.text }}</h3>
+        <div *ngFor="let option of question.options" class="option">
+          <input
+            type="radio"
+            [id]="'question-' + i + '-' + option"
+            [(ngModel)]="question.answer"
+            [value]="option"
+          />
+          <label [for]="'question-' + i + '-' + option">{{ option }}</label>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+          <button (click)="previousQuestion()" [disabled]="currentQuestionIndex === 0">Previous</button>
+          <button (click)="nextQuestion()" *ngIf="!isLastQuestion()" [disabled]="!canMoveToNext()">Next</button>
+          <button (click)="submitSurvey()" *ngIf="isLastQuestion()" [disabled]="!canMoveToNext()">Submit</button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Display results after survey is completed -->
+  <div class="result-box" *ngIf="surveyCompleted">
+    <h3>{{ result }}</h3>
+  </div>
+</div>

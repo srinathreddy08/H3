@@ -1,0 +1,155 @@
+<div class="con">
+  <app-navbar></app-navbar>
+
+  <div class="wellness-header">
+    <h1 class="page-title">Wellness Hub</h1>
+    <p class="page-subtitle">Your Journey to Mental Wellbeing</p>
+  </div>
+
+  <!-- Articles Section -->
+  <section class="wellness-section">
+    <div class="section-content articles">
+      <div class="section-info">
+        <h2>Mental Health Articles</h2>
+        <p>Explore expert-curated articles on mental health, wellness, and personal growth.</p>
+        <div class="article-categories">
+          <span class="category">Stress Management</span>
+          <span class="category">Anxiety</span>
+          <span class="category">Depression</span>
+          <span class="category">Self-Care</span>
+        </div>
+        <button class="action-button" [routerLink]="['/articles']">
+          <span>Browse Articles</span>
+          <i class="fas fa-book-open"></i>
+        </button>
+      </div>
+      <div class="section-visual">
+        <div class="article-preview">
+          <div class="preview-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvwOA_CQzv4qjf2kSQ2zU9nMTIyvhkufaznQ&s" alt="Article 1 Image" class="preview-image" />
+            <h3>Understanding Anxiety</h3>
+            <p>Learn about symptoms and coping strategies...</p>
+          </div>
+          <div class="preview-card">
+            <img src="/assets/article-2.jpg" alt="Article 2 Image" class="preview-image" />
+            <h3>Mindfulness Basics</h3>
+            <p>Start your journey to mindful living...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Helplines Section -->
+  <section class="wellness-section">
+    <div class="section-content helplines">
+      <div class="section-info">
+        <h2>24/7 Helplines</h2>
+        <p>Access immediate support through our network of professional helplines.</p>
+        <div class="helpline-features">
+          <div class="feature">
+            <i class="fas fa-phone-alt"></i>
+            <span>24/7 Availability</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-user-shield"></i>
+            <span>Confidential Support</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-users"></i>
+            <span>Professional Counselors</span>
+          </div>
+        </div>
+        <button class="action-button" [routerLink]="['/helplines']">
+          <span>Access Helplines</span>
+          <i class="fas fa-headset"></i>
+        </button>
+      </div>
+      <div class="section-visual">
+        <div class="helpline-numbers">
+          <div class="emergency-card">
+            <img src="/assets/helpline-1.jpg" alt="Helpline 1 Image" class="preview-image" />
+            <h3>Emergency Support</h3>
+            <div class="number">1-800-XXX-XXXX</div>
+            <span class="availability">Available 24/7</span>
+          </div>
+          <div class="emergency-card">
+            <img src="/assets/helpline-2.jpg" alt="Helpline 2 Image" class="preview-image" />
+            <h3>Crisis Helpline</h3>
+            <div class="number">1-888-XXX-XXXX</div>
+            <span class="availability">Available 24/7</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Survey Section -->
+  <section class="wellness-section">
+    <div class="section-content surveys">
+      <div class="section-info">
+        <h2>Wellness Assessment</h2>
+        <p>Take our comprehensive mental wellness surveys to understand your emotional well-being better.</p>
+        <div class="survey-types">
+          <div class="survey-type">
+            <i class="fas fa-chart-line"></i>
+            <span>Stress Level Assessment</span>
+          </div>
+          <div class="survey-type">
+            <i class="fas fa-brain"></i>
+            <span>Mental Health Screening</span>
+          </div>
+          <div class="survey-type">
+            <i class="fas fa-heart"></i>
+            <span>Emotional Wellness Check</span>
+          </div>
+        </div>
+        <button class="action-button" [routerLink]="['/survey']">
+          <span>Start Assessment</span>
+          <i class="fas fa-clipboard-check"></i>
+        </button>
+      </div>
+      <div class="section-visual">
+        <div class="survey-preview">
+          <img src="/assets/survey-preview.jpg" alt="Survey Preview" class="preview-image" />
+          <div class="progress-indicator">
+            <div class="progress-step completed">
+              <span class="step-number">1</span>
+              <span class="step-name">Basic Info</span>
+            </div>
+            <div class="progress-step active">
+              <span class="step-number">2</span>
+              <span class="step-name">Assessment</span>
+            </div>
+            <div class="progress-step">
+              <span class="step-number">3</span>
+              <span class="step-name">Results</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="chat-button" (click)="toggleChatbot()">
+    <div class="chat-icon">
+      <i class="fas fa-comments"></i>
+    </div>
+    <div class="chat-label">
+      <span>Let's talk!</span>
+      <div class="happy-emoji">😊</div>
+    </div>
+  </div>
+
+  <div *ngIf="showChatbot" class="chatbot-container">
+    <div class="chatbot-header">
+      <h2>Chat with Us</h2>
+      <button class="close-button" (click)="toggleChatbot()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="chatbot-content">
+      <!-- Add your chatbot functionality here -->
+    </div>
+  </div>
+</div>

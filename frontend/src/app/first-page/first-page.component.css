@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: #111111;
+  height: 100vh;
+  color: #ffffff;
+}
+
+.con {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  width: 100%;
+  position: relative;
+  background: linear-gradient(135deg,
+    rgba(239, 240, 235, 0.95),
+    rgba(25, 25, 25, 0.98)
+  );
+  overflow: hidden;
+}
+
+/* Add dynamic background pattern */
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(45deg, transparent 48%, #ffffff 49%, #ffffff 51%, transparent 52%) 0 0/20px 20px,
+    linear-gradient(-45deg, transparent 48%, #ffffff 49%, #ffffff 51%, transparent 52%) 0 0/20px 20px;
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+.animated-title {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+svg {
+  width: 700px;
+  height: 400px;
+}
+
+.path {
+  stroke-dashoffset: 0;
+  stroke-dasharray: 1000;
+  animation: drawPath 3s ease-in-out forwards;
+}
+
+.accent {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes drawPath {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.get-started-button {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 0;
+  padding: 20px 40px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  
+  z-index: 2;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.get-started-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: white;
+  transition: all 0.4s ease;
+  z-index: -1;
+}
+
+.get-started-button:hover {
+  color: black;
+}
+
+.get-started-button:hover::before {
+  left: 0;
+}
+
+.button-content {
+  position: relative;
+  z-index: 2;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  z-index: 1000;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  border-radius: 0;
+  width: 320px;
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+  backdrop-filter: blur(10px);
+}
+
+.popup-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.support-text {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 300;
+  margin: 15px 0;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0;
+    transform: translate(-50%, -48%);
+  }
+  to { 
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.popup-button {
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 12px 0;
+  width: 85%;
+  position: relative;
+  overflow: hidden;
+}
+/* General styles for title and subtitle */
+.page-header {
+  margin-bottom: 40px;  /* Space between title section and main content */
+}
+
+.page-title {
+  font-size: 124px;   /* Adjust as desired for large title */
+  font-weight: 700;
+  color: #0d0d0d;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.page-subtitle {
+  font-size: 20px;
+  font-weight: 300;
+  color: #ffffff;
+  letter-spacing: 1px;
+  opacity: 0.8;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.popup-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: white;
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.popup-button:hover {
+  color: black;
+}
+
+.popup-button:hover::before {
+  left: 0;
+}
+
+.close-button {
+  background-color: transparent;
+  color: #ffffff;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+  font-weight: 300;
+  opacity: 0.7;
+}
+
+.close-button:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.popup h2 {
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 2px;
+  color: #ffffff;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-weight: 300;
+  letter-spacing: 1px;
+  opacity: 0.8;
+  display: inline-block;
+  transition: color 0.3s ease; /* Smooth transition effect */
+}
+
+.subtitle:hover {
+  color: black; /* Change to black on hover */
+  background: #ffffff; /* Optional: Adds a subtle background to make it stand out */
+  padding: 2px 6px; /* Adds a bit of padding for a better hover effect */
+  border-radius: 4px; /* Optional: Rounded corners */
+}
+

@@ -1,0 +1,109 @@
+<!-- safety-service.component.html -->
+<app-navbar></app-navbar>
+
+<div class="safety-container">
+  <div class="page-header text-center">
+    <h1 class="page-title">Safety Hub</h1>
+    <p class="page-subtitle">Your Personal Safety Companion</p>
+  </div>
+
+  <div class="content-layout">
+    <!-- Map Section -->
+    <div class="map-section glass-panel">
+      <h2 class="section-title">Location Services</h2>
+      <div #map class="map-container"></div>
+    </div>
+
+    <!-- Right Side Content -->
+    <div class="right-content">
+      <!-- Action Buttons Section -->
+      <div class="actions-panel">
+        <!-- Emergency Contacts Button & Panel -->
+        <div class="action-group">
+          <button class="action-button contacts-button" (click)="toggleContacts()">
+            <i class="fas fa-address-book me-2"></i>
+            Emergency Contacts
+          </button>
+
+          <div class="collapsible-panel" [class.active]="showContacts">
+            <div class="panel-content glass-panel">
+              <!-- Existing Contacts Table -->
+              <div class="contacts-list" *ngIf="contacts.length > 0">
+                <table class="modern-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Phone</th>
+                      <th>Email</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let contact of contacts">
+                      <td>{{ contact.name }}</td>
+                      <td>{{ contact.phoneNumber }}</td>
+                      <td>{{ contact.email }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Add Contact Button & Form -->
+              <button class="secondary-button" (click)="toggleAddContact()" *ngIf="!showAddContact">
+                <i class="fas fa-plus me-2"></i>Add New Contact
+              </button>
+
+              <form *ngIf="showAddContact" class="modern-form" (ngSubmit)="addContact()">
+                <div class="form-group">
+                  <input type="text" [(ngModel)]="newContact.name" name="name" placeholder="Name" required />
+                </div>
+                <div class="form-group">
+                  <input type="text" [(ngModel)]="newContact.phoneNumber" name="phoneNumber" placeholder="Phone Number" required />
+                </div>
+                <div class="form-group">
+                  <input type="email" [(ngModel)]="newContact.email" name="email" placeholder="Email" required />
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="submit-button">Save</button>
+                  <button type="button" class="cancel-button" (click)="toggleAddContact()">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Incident Report Button & Panel -->
+        <div class="action-group">
+          <button class="action-button report-button" (click)="toggleIncidentForm()">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            Report Incident
+          </button>
+
+          <div class="collapsible-panel" [class.active]="enabaleForm">
+            <div class="panel-content glass-panel">
+              <form class="modern-form" (submit)="submitIncident($event)">
+                <div class="form-group">
+                  <input type="text" id="location" [(ngModel)]="location" name="location" placeholder="Location" required />
+                </div>
+                <div class="form-group">
+                  <textarea id="incident" [(ngModel)]="incident" name="incident" placeholder="Incident Details" required></textarea>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="submit-button">Submit Report</button>
+                  <button type="button" class="cancel-button" (click)="toggleIncidentForm()">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emergency Button -->
+  <div class="emergency-button-container">
+    <button class="emergency-button" (click)="sendDangerAlert()">
+      <i class="fas fa-exclamation-circle me-2"></i>
+      Emergency Alert
+    </button>
+  </div>
+</div>

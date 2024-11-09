@@ -1,0 +1,162 @@
+.survey-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 2px solid #640D5F; 
+  border-radius: 12px;
+  background-color: #f3f4f6; 
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+
+h2 {
+  color: #D91656; 
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+
+h3 {
+  color: #640D5F; 
+  font-size: 18px;
+  margin-bottom: 15px;
+  text-align: left; 
+}
+
+
+.option {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+
+.option input[type="radio"] {
+  margin-right: 10px;
+}
+
+.option label {
+  color: #000; 
+  font-size: 16px;
+  text-align: left;
+}
+
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #640D5F; 
+  background-color: #f3f4f6; 
+  color: #D91656;
+  font-size: 14px;
+  resize: none;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+
+button:first-child {
+  background-color: #D91656; 
+  color: #fff;
+}
+
+
+button:nth-child(2) {
+  background-color: #640D5F; 
+  color: #fff;
+}
+
+
+button:last-child {
+  background-color: #D91656; 
+  color: #fff;
+}
+
+button:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.result-box {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #f3f4f6; 
+  color: #D91656;
+  border: 2px solid #640D5F; 
+}
+
+.result-box h3 {
+  font-size: 18px;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-image: url('/assets/background_home.jpg'); 
+  background-size: cover; 
+  background-position: center; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.result-box {
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #f3f4f6; 
+  color: #D91656;
+  border: 2px solid #640D5F; 
+  min-height: 100px; 
+}
+
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-image: url('/assets/background_home.jpg'); 
+  background-size: cover; 
+  background-position: center; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; 
+  margin: 0;
+}
+
+
+
+.container {
+  background-image: url('/assets/background_home.jpg'); 
+  background-size: cover; 
+  background-position: center; 
+  width: 100%; 
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+  padding-top: 50px; 
+  min-height: 100vh; 
+}

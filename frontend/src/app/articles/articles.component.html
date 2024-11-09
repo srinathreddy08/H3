@@ -1,0 +1,30 @@
+<app-navbar> </app-navbar>
+<div class="container">
+  <div class="button-container">
+    <button class="category-btn" (click)="filterArticles('all')">All</button>
+    <button class="category-btn" (click)="filterArticles('stress')">Stress</button>
+    <button class="category-btn" (click)="filterArticles('depression')">Depression</button>
+    <button class="category-btn" (click)="filterArticles('anxiety')">Anxiety</button>
+  </div>
+
+  <div class="articles-container">
+    <div *ngFor="let article of filteredArticles" class="article-box">
+      <h3>{{ article.title }}</h3>
+      <p class="category">Category: {{ article.category }}</p>
+      <p>{{ article.showMore ? article.content : (article.content | slice:0:100) + '...' }}</p>
+      <button class="read-more-btn" (click)="openModal(article)">
+        Read More
+      </button>
+    </div>
+  </div>
+      
+  <div class="modal" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <h2>{{ selectedArticle?.title }}</h2>
+      <div class="modal-body">
+        <p>{{ selectedArticle?.content }}</p>
+      </div>
+    </div>
+  </div>
+</div>

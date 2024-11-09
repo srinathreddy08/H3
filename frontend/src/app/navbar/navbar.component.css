@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px; /* Increased padding */
+  background: linear-gradient(135deg,
+    rgba(25, 25, 25, 0.98),
+    rgba(30, 30, 29, 0.95)
+  );
+  position: relative;
+  z-index: 1000;
+  font-family: 'Montserrat', sans-serif;
+  height: 80px; /* Increased height */
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Added subtle shadow */  
+
+}
+
+/* Background pattern overlay */
+.navbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(45deg, transparent 48%, #ffffff 49%, #ffffff 51%, transparent 52%) 0 0/20px 20px, /* Increased pattern size */
+    linear-gradient(-45deg, transparent 48%, #ffffff 49%, #ffffff 51%, transparent 52%) 0 0/20px 20px;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.navbar-brand {
+  z-index: 2;
+}
+
+.brand-name {
+  text-decoration: none;
+  display: block;
+}
+
+.brand-logo {
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Increased gap */
+}
+
+.logo-text {
+  font-size: 32px; /* Increased font size */
+  font-weight: 700;
+  color: #f9f7f7;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 3px; /* Increased spacing */
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.1); /* Added subtle text shadow */
+}
+
+.logo-subtitle {
+  font-size: 14px; /* Increased font size */
+  font-weight: 300;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 1.5px; /* Increased spacing */
+  opacity: 0.9; /* Increased opacity */
+}
+
+.navbar-menu {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  gap: 20px; /* Increased gap between menu items */
+  z-index: 2;
+  align-items: center;
+}
+
+.nav-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 16px; /* Increased font size */
+  font-weight: 400;
+  padding: 10px 20px; /* Increased padding */
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px; /* Added letter spacing */
+}
+
+.link-content {
+  position: relative;
+  z-index: 2;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: white;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.nav-link:hover {
+  color: #000000;
+  transform: translateY(-2px); /* Added subtle hover animation */
+}
+
+.nav-link:hover::before {
+  left: 0;
+}
+
+.logout {
+  border: 2px solid rgba(255, 255, 255, 0.3); /* Increased border width */
+  border-radius: 4px; /* Added slight border radius */
+  padding: 10px 25px; /* Increased padding */
+  font-weight: 600; /* Made text bolder */
+}
+
+.logout:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.1); /* Added hover background */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 12px 20px;
+    height: auto;
+  }
+
+  .navbar-menu {
+    display: none;
+  }
+
+  .logo-text {
+    font-size: 24px;
+  }
+
+  .logo-subtitle {
+    font-size: 12px;
+  }
+}

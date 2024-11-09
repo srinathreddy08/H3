@@ -1,0 +1,27 @@
+<app-navbar></app-navbar>
+<div class="con">
+  <!-- Background pattern overlay -->
+  <div class="pattern-overlay"></div>
+  
+  
+
+  <section class="service-section safety active">
+    <div class="text-side">
+      <h2 class="section-title">Safety Services</h2>
+      <p class="support-text">Find nearby hospitals, police stations, and get weather details of the location.</p>
+      <button class="get-started-button" [routerLink]="['/safety']">
+        <span class="button-content">Explore Safety Services</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="service-section wellness">
+    <div class="text-side">
+      <h2 class="section-title">Wellness Services</h2>
+      <p class="support-text">Explore articles, get helplines and take survey on stress management, mental health, and self-care.</p>
+      <button class="get-started-button" [routerLink]="['/wellness']">
+        <span class="button-content">Explore Wellness Services</span>
+      </button>
+    </div>
+  </section>
+</div>

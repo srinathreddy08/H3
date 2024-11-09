@@ -1,0 +1,14 @@
+<app-navbar> </app-navbar>
+<div class="container">
+  <div class="helplines-container">
+    <div class="helpline-card" *ngFor="let helpline of helplines">
+      <h3>{{ helpline.name }}</h3>
+      <p><strong>Description:</strong> {{ helpline.description }}</p>
+      <p><strong>Helpline Number:</strong> {{ helpline.helplineNumber }}</p>
+      <p><strong>Time:</strong> {{ helpline.time }}</p>
+      <p><strong>Languages:</strong> {{ helpline.languages }}</p>
+      <p><strong>Email:</strong> <a href="mailto:{{ helpline.email }}">{{ helpline.email }}</a></p>
+      <p><strong>Website:</strong> <a href="{{ helpline.website }}" target="_blank">{{ helpline.website }}</a></p>
+    </div>
+  </div>
+</div>
