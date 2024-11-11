@@ -19,24 +19,115 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 export class SafetyServiceComponent implements AfterViewInit {
   @ViewChild('map') mapContainer!: ElementRef;
+  
   map: L.Map | null = null;
+  userMarker: L.Marker | null = null;
+  locationWatchId: number | null = null;
   searchQuery: string = '';
   weatherData: any = null;
   enableForm: boolean = false;
-
+  
   location: string = "";
   incident: string = "";
 
   ngAfterViewInit(): void {
-    this.initializeMap()
+    this.initializeMap();
+    this.startLocationTracking();
+  }
+
+  ngOnDestroy(): void {
+    this.stopLocationTracking();
   }
 
   initializeMap(): void {
+    // Initialize with a default view
     this.map = L.map(this.mapContainer.nativeElement).setView([51.505, -0.09], 13);
+    
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '© OpenStreetMap'
     }).addTo(this.map);
+
+    // Get initial user location
+    this.getCurrentLocation();
+  }
+
+  getCurrentLocation(): void {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          console.log(latitude)
+          console.log(longitude)
+          this.updateUserLocation(latitude, longitude);
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          alert('Unable to get your location. Please enable location services.');
+        }
+      );
+    } else {
+      alert('Geolocation is not supported by your browser');
+    }
+  }
+
+  startLocationTracking(): void {
+    if (navigator.geolocation) {
+      // Update location every 10 seconds
+      this.locationWatchId = navigator.geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          this.updateUserLocation(latitude, longitude);
+        },
+        (error) => {
+          console.error('Error tracking location:', error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        }
+      );
+    }
+  }
+
+  stopLocationTracking(): void {
+    if (this.locationWatchId !== null) {
+      navigator.geolocation.clearWatch(this.locationWatchId);
+    }
+  }
+
+  updateUserLocation(latitude: number, longitude: number): void {
+    if (!this.map) return;
+
+    // Create custom icon for user location
+    const userIcon = L.divIcon({
+      className: 'user-location-marker',
+      html: '<div class="pulse"></div>',
+      iconSize: [20, 20]
+    });
+
+    // Remove existing user marker if it exists
+    if (this.userMarker) {
+      this.map.removeLayer(this.userMarker);
+    }
+
+    // Add new user marker
+    this.userMarker = L.marker([latitude, longitude], {
+      icon: userIcon,
+      zIndexOffset: 1000 // Ensure user marker stays on top
+    }).addTo(this.map);
+
+    // Add accuracy circle
+    const accuracyCircle = L.circle([latitude, longitude], {
+      radius: 100, // You can adjust this or use position.coords.accuracy
+      color: '#4A90E2',
+      fillColor: '#4A90E2',
+      fillOpacity: 0.1
+    }).addTo(this.map);
+
+    // Center map on user location
+    this.map.setView([latitude, longitude], this.map.getZoom());
   }
 
   onSearchSubmit() {
