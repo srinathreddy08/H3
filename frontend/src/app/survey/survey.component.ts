@@ -1,8 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SurveyService } from '../survey.service'; 
+import { SurveyService } from '../survey.service';
 import { NavbarComponent } from '../navbar/navbar.component';
+
+interface SurveyResult {
+  stressLevel: string;
+  message: string;
+  immediateActions: string[];
+  recommendations: string[];
+  resources: string[];
+}
 
 @Component({
   selector: 'app-survey',
@@ -12,81 +20,212 @@ import { NavbarComponent } from '../navbar/navbar.component';
   styleUrls: ['./survey.component.css'],
 })
 export class SurveyComponent implements OnInit {
-  surveyTitle: string = 'Depression Awareness Survey';
-  questions: any[] = [];
+  surveyTitle: string = 'Current Mental State Assessment';
+  surveyDescription: string = 'This assessment helps understand how you\'re feeling right now. Be honest with yourself - your answers will help us provide the most relevant support.';
   currentQuestionIndex: number = 0;
-  result: string = '';
-  surveyCompleted: boolean = false; 
+  surveyCompleted: boolean = false;
+  questions: any[] = [];
+  result: SurveyResult | null = null;
 
-  optionPoints: { [key: string]: number } = {
-    Never: 1,
-    Rarely: 2,
-    Sometimes: 3,
-    Often: 4,
-    Always: 5,
-  };
+  constructor(private surveyService: SurveyService) {}
 
-  constructor(private surveyService: SurveyService) {} 
+ 
 
-  ngOnInit() {
-    this.resetSurvey(); 
-  }
+  calculateScore(): number {
+    const scoreMap: { [key: string]: number } = {
+      'I feel calm and content': 0,
+      'Completely safe and secure': 0,
+      'Energetic and motivated': 0,
+      'Clear and organized': 0,
+      'Fully present and connected': 0,
+      'Confident in handling challenges': 0,
+      'In control of my emotions': 0,
+      'Optimistic and hopeful': 0,
+      'I can focus clearly': 0,
+      'No physical symptoms': 0,
+      
+      'I feel slightly unsettled': 1,
+      'Slightly uneasy': 1,
+      'Slightly tired but managing': 1,
+      'Slightly scattered': 1,
+      'Slightly disconnected': 1,
+      'Slightly overwhelmed': 1,
+      'Slightly unstable': 1,
+      'Slightly uncertain': 1,
+      'I\'m slightly distracted': 1,
+      'Mild physical symptoms': 1,
+      
+      'I feel moderately distressed': 2,
+      'Notably anxious': 2,
+      'Notably fatigued': 2,
+      'Racing or disorganized': 2,
+      'Notably detached': 2,
+      'Struggling to cope': 2,
+      'Difficulty managing emotions': 2,
+      'Notably worried': 2,
+      'I\'m having trouble concentrating': 2,
+      'Moderate physical symptoms': 2,
+      
+      'I feel severely overwhelmed': 3,
+      'Extremely unsafe': 3,
+      'Completely exhausted': 3,
+      'Overwhelming or chaotic': 3,
+      'Completely isolated': 3,
+      'Unable to handle challenges': 3,
+      'Feeling out of control': 3,
+      'Feeling hopeless': 3,
+      'I can barely focus at all': 3,
+      'Severe physical symptoms': 3
+    };
 
-  resetSurvey() {
-    this.surveyService.getQuestions().subscribe(questions => {
-      this.questions = questions.map(q => ({ ...q, answer: '' })); 
-      this.currentQuestionIndex = 0; 
-      this.surveyCompleted = false; 
-    });
-  }
-
-  nextQuestion() {
-    if (this.canMoveToNext()) {
-      if (this.currentQuestionIndex < this.questions.length - 1) {
-        this.currentQuestionIndex++;
-      }
-    }
-  }
-
-  previousQuestion() {
-    if (this.currentQuestionIndex > 0) {
-      this.currentQuestionIndex--;
-    }
-  }
-
-  isLastQuestion() {
-    return this.currentQuestionIndex === this.questions.length - 1;
-  }
-
-  canMoveToNext() {
-    return this.questions[this.currentQuestionIndex].answer !== '';
-  }
-
-  submitSurvey() {
-    const totalScore = this.questions.reduce((acc, question) => {
-      const answer = question.answer;
-      return acc + this.optionPoints[answer]; 
+    return this.questions.reduce((acc, question) => {
+      return acc + (scoreMap[question.answer] || 0);
     }, 0);
-
-    this.result = this.getResultMessage(totalScore); 
-    this.surveyCompleted = true; 
   }
 
-  getResultMessage(score: number): string {
-    if (score >= 40) {
-      return "Remember, you are not alone, and there is always help available!";
-    } else if (score >= 30) {
-      return "You're going through a tough time, and it might help to talk to someone who can support you.";
-    } else if (score >= 20) {
-      return "You may be experiencing some sign of depression, you can always reach out for help and support.";
-    } else if (score >= 11) {
-      return "You're doing okay, but it’s always good to check in with yourself.";
+  getResult(score: number): SurveyResult {
+    const maxScore = this.questions.length * 3; // Maximum possible score
+    const percentage = (score / maxScore) * 100;
+
+    if (percentage <= 25) {
+      return {
+        stressLevel: 'Minimal Stress',
+        message: 'You appear to be in a stable and balanced state of mind. This is a great time to focus on maintaining your well-being.',
+        immediateActions: [
+          'Take a moment to appreciate your current positive state',
+          'Consider journaling about what\'s working well for you',
+          'Share your positive energy with others who might need support'
+        ],
+        recommendations: [
+          'Continue your current positive practices',
+          'Set new personal growth goals',
+          'Strengthen your support networks'
+        ],
+        resources: [
+          'Mindfulness and meditation apps',
+          'Personal development resources',
+          'Wellness tracking tools'
+        ]
+      };
+    } else if (percentage <= 50) {
+      return {
+        stressLevel: 'Moderate Stress',
+        message: 'You\'re experiencing some stress, but it\'s still manageable. Taking action now can help prevent it from escalating.',
+        immediateActions: [
+          'Take 5 deep breaths right now',
+          'Step away from stressful situations for a short break',
+          'Reach out to a friend or family member'
+        ],
+        recommendations: [
+          'Practice regular stress-management techniques',
+          'Establish better boundaries in stressful situations',
+          'Create a daily relaxation routine'
+        ],
+        resources: [
+          'Stress management guides',
+          'Relaxation techniques',
+          'Support group connections'
+        ]
+      };
+    } else if (percentage <= 75) {
+      return {
+        stressLevel: 'High Stress',
+        message: 'You\'re dealing with significant stress right now. It\'s important to take immediate steps to care for yourself.',
+        immediateActions: [
+          'Find a quiet space to decompress',
+          'Call a trusted friend or family member',
+          'Use grounding techniques (5-4-3-2-1 method)'
+        ],
+        recommendations: [
+          'Schedule an appointment with a counselor',
+          'Reduce commitments where possible',
+          'Create a stress management plan'
+        ],
+        resources: [
+          'Professional counseling services',
+          'Crisis helpline numbers',
+          'Online therapy platforms'
+        ]
+      };
     } else {
-      return "You're positive and doing amazing in your life!";
+      return {
+        stressLevel: 'Severe Stress',
+        message: 'You\'re experiencing severe stress levels. Please reach out for professional help - you don\'t have to handle this alone.',
+        immediateActions: [
+          'Contact a mental health professional immediately',
+          'Reach out to your support system right now',
+          'Remove yourself from stressful environments if possible'
+        ],
+        recommendations: [
+          'Seek immediate professional support',
+          'Consider taking a break from regular duties',
+          'Create a crisis management plan with a professional'
+        ],
+        resources: [
+          'Emergency mental health services',
+          '24/7 Crisis hotlines',
+          'Local mental health clinics'
+        ]
+      };
     }
   }
+
+  
+  
+ ngOnInit() {
+  this.resetSurvey();
+}
+
+resetSurvey() {
+  this.surveyService.getQuestions().subscribe(questions => {
+    this.questions = questions.map(q => ({ ...q, answer: '' }));
+    this.currentQuestionIndex = 0;
+    this.surveyCompleted = false;
+    this.result = null;
+  });
+}
+
+getProgressPercentage(): number {
+  const answeredQuestions = this.questions.filter(q => q.answer !== '').length;
+  return (answeredQuestions / this.questions.length) * 100;
+}
+
+selectOption(option: string) {
+  this.questions[this.currentQuestionIndex].answer = option;
+}
+
+nextQuestion() {
+  if (this.canMoveToNext()) {
+    if (this.currentQuestionIndex < this.questions.length - 1) {
+      this.currentQuestionIndex++;
+    }
+  }
+}
+
+previousQuestion() {
+  if (this.currentQuestionIndex > 0) {
+    this.currentQuestionIndex--;
+  }
+}
+
+isLastQuestion(): boolean {
+  return this.currentQuestionIndex === this.questions.length - 1;
+}
+
+canMoveToNext(): boolean {
+  return this.questions[this.currentQuestionIndex].answer !== '';
 }
 
 
 
 
+
+
+
+submitSurvey() {
+  const score = this.calculateScore();
+  this.result = this.getResult(score);
+  this.surveyCompleted = true;
+}
+
+}

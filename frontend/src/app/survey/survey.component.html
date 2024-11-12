@@ -1,33 +1,84 @@
-<app-navbar> </app-navbar>
-<div class="container">
-  <div class="survey-container" *ngIf="!surveyCompleted"> 
-    <h2>{{ surveyTitle }}</h2>
-    
-    <div *ngFor="let question of questions; let i = index">
-      <ng-container *ngIf="currentQuestionIndex === i">
-        <h3>{{ question.text }}</h3>
-        <div *ngFor="let option of question.options" class="option">
-          <input
-            type="radio"
-            [id]="'question-' + i + '-' + option"
-            [(ngModel)]="question.answer"
-            [value]="option"
-          />
-          <label [for]="'question-' + i + '-' + option">{{ option }}</label>
-        </div>
+<div class="survey-container">
+  <h1 class="survey-title">{{ surveyTitle }}</h1>
+  <p class="survey-description">{{ surveyDescription }}</p>
 
-        <!-- Navigation Buttons -->
-        <div class="navigation-buttons">
-          <button (click)="previousQuestion()" [disabled]="currentQuestionIndex === 0">Previous</button>
-          <button (click)="nextQuestion()" *ngIf="!isLastQuestion()" [disabled]="!canMoveToNext()">Next</button>
-          <button (click)="submitSurvey()" *ngIf="isLastQuestion()" [disabled]="!canMoveToNext()">Submit</button>
-        </div>
-      </ng-container>
+  <!-- Survey Questions -->
+  <div *ngIf="!surveyCompleted" class="survey-content">
+    <div class="progress-bar">
+      <div class="progress" [style.width.%]="getProgressPercentage()"></div>
+    </div>
+    
+    <div class="question-container" *ngIf="questions.length > 0">
+      <h2 class="question-text">{{ questions[currentQuestionIndex].text }}</h2>
+      
+      <div class="options-container">
+        <button *ngFor="let option of questions[currentQuestionIndex].options"
+                (click)="selectOption(option)"
+                [class.selected]="questions[currentQuestionIndex].answer === option"
+                class="option-button">
+          {{ option }}
+        </button>
+      </div>
+
+      <div class="navigation-buttons">
+        <button (click)="previousQuestion()" 
+                [disabled]="currentQuestionIndex === 0"
+                class="nav-button">
+          Previous
+        </button>
+        
+        <button *ngIf="!isLastQuestion()"
+                (click)="nextQuestion()"
+                [disabled]="!canMoveToNext()"
+                class="nav-button">
+          Next
+        </button>
+        
+        <button *ngIf="isLastQuestion()"
+                (click)="submitSurvey()"
+                [disabled]="!canMoveToNext()"
+                class="submit-button">
+          Submit
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- Display results after survey is completed -->
-  <div class="result-box" *ngIf="surveyCompleted">
-    <h3>{{ result }}</h3>
+  <!-- Survey Results -->
+  <div *ngIf="surveyCompleted && result" class="results-container">
+    <h2 class="result-title">Assessment Results</h2>
+    <div class="stress-level">
+      <h3>Stress Level:</h3>
+      <p>{{ result.stressLevel }}</p>
+    </div>
+    
+    <div class="message">
+      <p>{{ result.message }}</p>
+    </div>
+
+    <div class="actions-section">
+      <h3>Immediate Actions:</h3>
+      <ul>
+        <li *ngFor="let action of result.immediateActions">{{ action }}</li>
+      </ul>
+    </div>
+
+    <div class="recommendations-section">
+      <h3>Recommendations:</h3>
+      <ul>
+        <li *ngFor="let rec of result.recommendations">{{ rec }}</li>
+      </ul>
+    </div>
+
+    <div class="resources-section">
+      <h3>Helpful Resources:</h3>
+      <ul>
+        <li *ngFor="let resource of result.resources">{{ resource }}</li>
+      </ul>
+    </div>
+
+    <button (click)="resetSurvey()" class="reset-button">
+      Take Assessment Again
+    </button>
   </div>
 </div>

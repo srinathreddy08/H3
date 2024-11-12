@@ -6,19 +6,107 @@ import { Observable, of } from 'rxjs';
 })
 export class SurveyService {
   private questions = [
-    { text: 'How often do you find it difficult to relax during stressful situations?', options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Always'], answer: '' },
-    { text: 'How frequently do you feel overwhelmed by feelings of hopelessness or despair?', options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Always'], answer: '' },
-    { text: 'How often do you struggle to maintain personal relationships?', options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Always'], answer: '' },
-    { text: 'How frequently do you neglect self-care in your daily routine?', options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Always'], answer: '' },
-    { text: 'How often do you feel out of control of your emotions during challenging circumstances?', options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Always'], answer: '' },
-    { text: 'How frequently do you feel unaccomplished or dissatisfied with your daily activities?', options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Always'], answer: '' },
-    { text: 'How often do you find it hard to concentrate or stay focused on tasks?', options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Always'], answer: '' },
-    { text: 'How frequently do you feel unsupported by your friends or family members?', options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Always'], answer: '' },
-    { text: 'How often do you find it difficult to set healthy boundaries in your relationships?', options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Always'], answer: '' },
-    { text: 'How frequently do you feel a lack of purpose or direction in your life?', options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Always'], answer: '' },
+    {
+      text: 'How are you feeling emotionally right now?',
+      options: [
+        'I feel calm and content',
+        'I feel slightly unsettled',
+        'I feel moderately distressed',
+        'I feel severely overwhelmed'
+      ],
+      answer: ''
+    },
+    {
+      text: 'Are you experiencing physical signs of stress at the moment (e.g., rapid heartbeat, tension, sweating)?',
+      options: [
+        'No physical symptoms',
+        'Mild physical symptoms',
+        'Moderate physical symptoms',
+        'Severe physical symptoms'
+      ],
+      answer: ''
+    },
+    {
+      text: 'How well can you concentrate on tasks right now?',
+      options: [
+        'I can focus clearly',
+        'I\'m slightly distracted',
+        'I\'m having trouble concentrating',
+        'I can barely focus at all'
+      ],
+      answer: ''
+    },
+    {
+      text: 'How would you describe your energy level at this moment?',
+      options: [
+        'Energetic and motivated',
+        'Slightly tired but managing',
+        'Notably fatigued',
+        'Completely exhausted'
+      ],
+      answer: ''
+    },
+    {
+      text: 'How are your thoughts flowing right now?',
+      options: [
+        'Clear and organized',
+        'Slightly scattered',
+        'Racing or disorganized',
+        'Overwhelming or chaotic'
+      ],
+      answer: ''
+    },
+    {
+      text: 'How connected do you feel to your surroundings and people around you right now?',
+      options: [
+        'Fully present and connected',
+        'Slightly disconnected',
+        'Notably detached',
+        'Completely isolated'
+      ],
+      answer: ''
+    },
+    {
+      text: 'How would you rate your current ability to handle daily challenges?',
+      options: [
+        'Confident in handling challenges',
+        'Slightly overwhelmed',
+        'Struggling to cope',
+        'Unable to handle challenges'
+      ],
+      answer: ''
+    },
+    {
+      text: 'How would you describe your current emotional control?',
+      options: [
+        'In control of my emotions',
+        'Slightly unstable',
+        'Difficulty managing emotions',
+        'Feeling out of control'
+      ],
+      answer: ''
+    },
+    {
+      text: 'How safe and secure do you feel right now?',
+      options: [
+        'Completely safe and secure',
+        'Slightly uneasy',
+        'Notably anxious',
+        'Extremely unsafe'
+      ],
+      answer: ''
+    },
+    {
+      text: 'How hopeful do you feel about your immediate future?',
+      options: [
+        'Optimistic and hopeful',
+        'Slightly uncertain',
+        'Notably worried',
+        'Feeling hopeless'
+      ],
+      answer: ''
+    }
   ];
-
-  constructor() {}
 
   getQuestions(): Observable<any[]> {
     return of(this.questions);
