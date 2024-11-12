@@ -36,20 +36,22 @@
 }
 
 .page-title {
-  font-size: 84px;
+  font-size: 44px;
   font-weight: 700;
   color: #0d0d0d;
   text-transform: uppercase;
   letter-spacing: 2px;
   font-family: 'Montserrat', sans-serif;
+  text-align: center;
 }
 
 .page-subtitle {
   font-size: 20px;
-  font-weight: 300;
-  color: #ffffff;
+  font-weight: 400;
+  color: #212229;
   letter-spacing: 1px;
   opacity: 0.8;
+  text-align: center;
 }
 
 /* Section Styles */

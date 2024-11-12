@@ -1,0 +1,50 @@
+<!-- chatbot.component.html -->
+<div class="chatbot-container" [class.open]="isOpen">
+    <!-- Chat Toggle Button -->
+    <button class="chat-toggle" (click)="toggleChat()">
+      <span *ngIf="!isOpen">Lets Talk</span>
+      <span *ngIf="isOpen">×</span>
+    </button>
+  
+    <!-- Chat Window -->
+    <div class="chat-window">
+      <!-- Chat Header -->
+      <div class="chat-header">
+        <h3>Support Chat</h3>
+        <p>We're here to listen and help</p>
+      </div>
+  
+      <!-- Messages Container -->
+      <div class="messages-container">
+        <div *ngFor="let message of messages" 
+             class="message" 
+             [class.user-message]="message.isUser"
+             [class.bot-message]="!message.isUser">
+          <div class="message-content" [innerHTML]="message.content"></div>
+          <div class="message-timestamp">
+            {{ message.timestamp | date:'shortTime' }}
+          </div>
+        </div>
+        
+        <!-- Typing Indicator -->
+        <div *ngIf="isTyping" class="typing-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+  
+      <!-- Input Area -->
+      <div class="chat-input">
+        <input type="text" 
+               [(ngModel)]="newMessage" 
+               (keyup.enter)="sendMessage()"
+               placeholder="Type your message..."
+               [disabled]="isTyping">
+        <button (click)="sendMessage()" 
+                [disabled]="!newMessage.trim() || isTyping">
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
