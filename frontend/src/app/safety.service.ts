@@ -40,4 +40,8 @@ export class SafetyService {
     console.error(errorMessage);
     return throwError(() => errorMessage);
   }
+
+  getAllDangerLocations():Observable<any>{
+    return this.http.get<any>("http://localhost:8090/api/safety/danger-areas")
+  }
 }

@@ -8,6 +8,7 @@ import { SafetyService } from '../safety.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { EmergencyContact } from '../interfaces/emergencycontact.interface';
 import { HttpClientModule, HttpClient } from '@angular/common/http';  
+import { error } from 'console';
 
 @Component({
   selector: 'app-safety-service',
@@ -26,6 +27,7 @@ export class SafetyServiceComponent implements AfterViewInit {
   searchQuery: string = '';
   weatherData: any = null;
   enableForm: boolean = false;
+  dangerAreas:any=[]
   
   location: string = "";
   incident: string = "";
@@ -50,6 +52,8 @@ export class SafetyServiceComponent implements AfterViewInit {
 
     // Get initial user location
     this.getCurrentLocation();
+
+    this.getAllDangerAreas();
   }
 
   getCurrentLocation(): void {
@@ -103,7 +107,7 @@ export class SafetyServiceComponent implements AfterViewInit {
     // Create custom icon for user location
     const userIcon = L.divIcon({
       className: 'user-location-marker',
-      html: '<div class="pulse"></div>',
+      html: '<img src="/assets/pin.png" width="24" height="24" />',
       iconSize: [20, 20]
     });
 
@@ -242,7 +246,7 @@ export class SafetyServiceComponent implements AfterViewInit {
   }
   getDefaultIcon(): L.Icon<L.IconOptions> {
     return L.icon({
-      iconUrl: 'assets/default-icon.png',
+      iconUrl: '/assets/pin.png',
       iconSize: [25, 41],
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
@@ -257,10 +261,8 @@ export class SafetyServiceComponent implements AfterViewInit {
 
   submitIncident(event: any): void {
     event.preventDefault();
-    console.log(this.location)
-    console.log(this.incident)
     if (navigator.geolocation) {
-      
+      console.log("inside navigator")
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const latitude = position.coords.latitude; 
@@ -268,6 +270,7 @@ export class SafetyServiceComponent implements AfterViewInit {
           let object={
             latitude,longitude,location:this.location,description:this.incident,type:"Incident"
           }
+
           let url = "http://localhost:8090/api/safety/danger-areas"
           fetch(url, {
             method: "POST",
@@ -297,6 +300,53 @@ export class SafetyServiceComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.loadContacts();
+  }
+
+  getAllDangerAreas(): void {
+    this.emergencyContactService.getAllDangerLocations().subscribe({
+      next: (data) => {
+        this.dangerAreas = data; // Store the danger areas from the API response
+  
+        // Clear any existing layers before adding new ones
+        this.clearExistingDangerAreas();
+  
+        // Iterate through the danger areas and add a circle for each one
+        data.forEach((dangerArea: any) => {
+          if (dangerArea.latitude && dangerArea.longitude) {
+            this.addDangerAreaCircle(dangerArea.latitude, dangerArea.longitude);
+          }
+        });
+      },
+      error: (error) => {
+        console.log('Error fetching danger areas:', error);
+      },
+      complete: () => {
+        console.log('Danger areas fetched successfully');
+      }
+    });
+  }
+  
+  // Method to add a circle to the map for a danger area
+  addDangerAreaCircle(latitude: number, longitude: number): void {
+    if (this.map) {
+      L.circle([latitude, longitude], {
+        radius: 20, // Adjust radius as needed
+        color: '#FF0000', // Red color for danger
+        fillColor: '#FF0000',
+        fillOpacity: 0.5
+      }).addTo(this.map);
+    }
+  }
+  
+  // Optional: Clear existing danger area circles if needed
+  clearExistingDangerAreas(): void {
+    if (this.map) {
+      this.map.eachLayer((layer: L.Layer) => {
+        if (layer instanceof L.Circle) {
+          this.map?.removeLayer(layer); // Remove any previous danger area circles
+        }
+      });
+    }
   }
 
   // Load existing contacts

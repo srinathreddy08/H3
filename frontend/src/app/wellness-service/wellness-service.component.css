@@ -8,7 +8,7 @@
   width: 100%;
   position: relative;
   background: linear-gradient(135deg,
-    rgba(239, 240, 235, 0.95),
+    rgba(238, 238, 234, 0.95),
     rgba(25, 25, 25, 0.98)
   );
   overflow: hidden;
@@ -97,7 +97,7 @@
 .section-visual {
   flex: 1;
   padding: 40px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(215, 4, 4, 0.05);
 }
 
 /* Button Styles */
@@ -152,7 +152,7 @@
 }
 
 .category, .feature, .survey-type {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(233, 230, 219, 0.1);
   padding: 8px 16px;
   border-radius: 0;
   font-size: 14px;
@@ -167,18 +167,54 @@
 
 /* Card Styles */
 .preview-card, .emergency-card {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 20px;
+  background: #f4e0e0;
+  padding: 25px;
   margin-bottom: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.preview-card:hover, .emergency-card:hover {
+.preview-card {
+  color: #333333;
+}
+
+.preview-card h3 {
+  color: #2c3e50;
+  font-size: 20px;
+  margin: 15px 0;
+  font-weight: 600;
+}
+
+.preview-card p {
+  color: #666666;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.preview-card i {
+  font-size: 32px;
+  color: #3498db;
+  margin-bottom: 10px;
+}
+
+.preview-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(52, 152, 219, 0.3);
+}
+
+/* Keep emergency card styles separate since they might need different styling */
+.emergency-card {
+  background: rgba(255, 255, 255, 0.1);
+  color: #d76868;
+}
+
+.emergency-card:hover {
   transform: translateY(-5px);
   background: rgba(255, 255, 255, 0.15);
 }
-
 /* Progress Indicator Styles */
 .progress-indicator {
   display: flex;

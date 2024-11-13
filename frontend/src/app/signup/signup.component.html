@@ -1,46 +1,45 @@
 <div class="con">
-    <div class="page-header text-center">
-      <h1 class="page-title">Sign Up</h1>
-      <p class="page-subtitle">Join Our Wellness Community</p>
-    </div>
-    
+  <div class="form-container-wrapper">
     <div class="form-container">
+      <div class="page-header text-center">
+        <h1 class="page-title">Sign Up</h1>
+        <p class="page-subtitle">Join Our Wellness Community</p>
+      </div>
+      
       <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <input type="text" id="firstname" formControlName="firstName" placeholder="First Name" required>
-        </div>
-        
         <div class="form-group">
           <input type="text" id="lastname" formControlName="lastName" placeholder="Last Name" required>
         </div>
-        
+
         <div class="form-group">
           <input type="email" id="email" formControlName="email" placeholder="Email Address" required>
         </div>
-        
+
         <div class="form-group">
           <input type="password" id="password" formControlName="password" placeholder="Password (8+ characters)" required>
         </div>
-        
+
         <div class="form-group">
           <input type="tel" id="phone" formControlName="phone" placeholder="Phone Number" required>
         </div>
-        
+
         <div class="form-group">
           <select id="role" formControlName="role" required>
             <option value="USER">User</option>
           </select>
         </div>
-        
-        <button type="submit" class="get-started-button">
-          <span class="button-content">Create Account</span>
-        </button>
-        
+
+        <div class="button-wrapper">
+          <button type="submit" class="get-started-button">
+            <span class="button-content">Create Account</span>
+          </button>
+        </div>
+
         <p class="support-text">
-          Already have an account? 
+          Already have an account?
           <a routerLink="/login" class="subtitle">Sign In</a>
         </p>
       </form>
     </div>
   </div>
-  
+</div>
