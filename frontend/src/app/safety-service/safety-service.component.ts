@@ -7,28 +7,29 @@ import { SafetyService } from '../safety.service';
 //import { WeatherService } from '../weather.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { EmergencyContact } from '../interfaces/emergencycontact.interface';
-import { HttpClientModule, HttpClient } from '@angular/common/http';  
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { error } from 'console';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-safety-service',
   standalone: true,
-  imports: [FormsModule, CommonModule, NavbarComponent,HttpClientModule],
+  imports: [FormsModule, CommonModule, NavbarComponent, HttpClientModule],
   templateUrl: './safety-service.component.html',
   styleUrl: './safety-service.component.css'
 })
 
 export class SafetyServiceComponent implements AfterViewInit {
   @ViewChild('map') mapContainer!: ElementRef;
-  
+
   map: L.Map | null = null;
   userMarker: L.Marker | null = null;
   locationWatchId: number | null = null;
   searchQuery: string = '';
   weatherData: any = null;
   enableForm: boolean = false;
-  dangerAreas:any=[]
-  
+  dangerAreas: any = []
+
   location: string = "";
   incident: string = "";
 
@@ -44,7 +45,7 @@ export class SafetyServiceComponent implements AfterViewInit {
   initializeMap(): void {
     // Initialize with a default view
     this.map = L.map(this.mapContainer.nativeElement).setView([51.505, -0.09], 13);
-    
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '© OpenStreetMap'
@@ -265,25 +266,25 @@ export class SafetyServiceComponent implements AfterViewInit {
       console.log("inside navigator")
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const latitude = position.coords.latitude; 
-          const longitude = position.coords.longitude; 
-          let object={
-            latitude,longitude,location:this.location,description:this.incident,type:"Incident"
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          let object = {
+            latitude, longitude, location: this.location, description: this.incident, type: "Incident"
           }
 
           let url = "http://localhost:8090/api/safety/danger-areas"
           fetch(url, {
             method: "POST",
             headers: {
-              'Content-Type': 'application/json', 
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify(object)
-          }).then(response=>response.json())
-          .then(data=>alert("Reported Successfully"))
-          .catch(error=>console.log(error))
+          }).then(response => response.json())
+            .then(data => alert("Reported Successfully"))
+            .catch(error => console.log(error))
         },
         (error) => {
-         console.log(error)
+          console.log(error)
         }
       );
     } else {
@@ -292,11 +293,11 @@ export class SafetyServiceComponent implements AfterViewInit {
 
   }
   contacts: EmergencyContact[] = [];
-  newContact: EmergencyContact = { name: '', phoneNumber: '', email: '' };
+  newContact: EmergencyContact = { userId: 0, name: '', phoneNumber: '', email: '' };
   apiUrl = 'http://localhost:8090/api/emergency-contacts';
   // constructor(private emergencyContactService: SafetyService) {}
 
-  constructor(private http: HttpClient,private emergencyContactService:SafetyService) {}
+  constructor(private http: HttpClient, private emergencyContactService: SafetyService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadContacts();
@@ -306,10 +307,10 @@ export class SafetyServiceComponent implements AfterViewInit {
     this.emergencyContactService.getAllDangerLocations().subscribe({
       next: (data) => {
         this.dangerAreas = data; // Store the danger areas from the API response
-  
+
         // Clear any existing layers before adding new ones
         this.clearExistingDangerAreas();
-  
+
         // Iterate through the danger areas and add a circle for each one
         data.forEach((dangerArea: any) => {
           if (dangerArea.latitude && dangerArea.longitude) {
@@ -325,7 +326,7 @@ export class SafetyServiceComponent implements AfterViewInit {
       }
     });
   }
-  
+
   // Method to add a circle to the map for a danger area
   addDangerAreaCircle(latitude: number, longitude: number): void {
     if (this.map) {
@@ -337,7 +338,7 @@ export class SafetyServiceComponent implements AfterViewInit {
       }).addTo(this.map);
     }
   }
-  
+
   // Optional: Clear existing danger area circles if needed
   clearExistingDangerAreas(): void {
     if (this.map) {
@@ -351,32 +352,54 @@ export class SafetyServiceComponent implements AfterViewInit {
 
   // Load existing contacts
   loadContacts() {
-    this.http.get<EmergencyContact[]>(this.apiUrl)
-      .subscribe((data) => {
-        this.contacts = data;
-      }, error => {
-        console.error('Error loading contacts:', error);
-      });
+    const user = localStorage.getItem("user")
+    if (!user) {
+      this.router.navigate(['/login'])
+    }
+    if (user) {
+      let parsedUser = JSON.parse(user);
+      console.log(parsedUser)
+      this.http.get<EmergencyContact[]>(this.apiUrl).subscribe({
+        next: (data) => {
+          this.contacts = data
+          this.contacts = data.filter(data => data.userId === parsedUser.id)
+        },
+        error: (error) => {
+          console.log(error)
+        }
+      })
+    }
+
   }
 
   // Add a new contact
   addContact() {
-    this.http.post<EmergencyContact>(this.apiUrl, this.newContact)
-      .subscribe((data) => {
-        this.contacts.push(data);
-        this.newContact = { name: '', phoneNumber: '', email: '' }; // Reset form
-      }, error => {
-        console.error('Error adding contact:', error);
-      });
+    const user = localStorage.getItem("user")
+    if (!user) {
+      this.router.navigate(['/login'])
+    }
+    if (user) {
+      let parsedUser = JSON.parse(user);
+      console.log(parsedUser)
+      this.http.post<EmergencyContact>(this.apiUrl, {...this.newContact,userId:parsedUser.id})
+        .subscribe({
+          next: (data) => {
+            this.contacts.push(data);
+            this.newContact = { userId: parsedUser.id, name: '', phoneNumber: '', email: '' }; // Reset form
+          }, error: (error) => {
+            console.error('Error adding contact:', error);
+          }
+        });
+    }
   }
-  
+
   sendDangerAlert(): void {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
-  
+
           const emergencyMessage = {
             message: `EMERGENCY ALERT: User requires immediate assistance!\nLocation: https://www.google.com/maps?q=${latitude},${longitude}`,
             location: {
@@ -385,7 +408,7 @@ export class SafetyServiceComponent implements AfterViewInit {
             },
             timestamp: new Date().toISOString()
           };
-  
+
           this.emergencyContactService.alertAllContacts(JSON.stringify(emergencyMessage))
             .subscribe({
               next: () => {
@@ -402,7 +425,7 @@ export class SafetyServiceComponent implements AfterViewInit {
             message: "EMERGENCY ALERT: User requires immediate assistance! (Location unavailable)",
             timestamp: new Date().toISOString()
           };
-  
+
           this.emergencyContactService.alertAllContacts(JSON.stringify(emergencyMessage))
             .subscribe({
               next: () => {
@@ -420,7 +443,7 @@ export class SafetyServiceComponent implements AfterViewInit {
         message: "EMERGENCY ALERT: User requires immediate assistance! (Location unavailable)",
         timestamp: new Date().toISOString()
       };
-  
+
       this.emergencyContactService.alertAllContacts(JSON.stringify(emergencyMessage))
         .subscribe({
           next: () => {
@@ -433,7 +456,7 @@ export class SafetyServiceComponent implements AfterViewInit {
         });
     }
   }
-  
+
   ;
 
   showContacts: boolean = false;

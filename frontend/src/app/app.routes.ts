@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+
+
 import { HomeComponent } from './home/home.component';
 import { WellnessServiceComponent } from './wellness-service/wellness-service.component';
 import { SafetyServiceComponent } from './safety-service/safety-service.component';
@@ -23,5 +25,6 @@ export const routes: Routes = [
     { path: 'helplines', component: HelplinesComponent},
     { path: 'survey', component: SurveyComponent},
     { path: 'aboutus', component: AboutUsComponent },
+   
     // { path: '**', redirectTo: '' }  
 ];
