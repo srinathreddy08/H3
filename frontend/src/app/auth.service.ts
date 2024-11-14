@@ -1,13 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http:HttpClient) {}
+  constructor(private http:HttpClient,private router: Router) {}
 
   url: string = "http://localhost:9999"
 
@@ -31,6 +32,30 @@ export class AuthService {
       "password" : password
     }
     return this.http.post(`${this.url}/auth/login`,cred)
+  }
+  setToken(token: string) {
+    localStorage.setItem('token', token);
+  }
+
+  // Get token from localStorage
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  // Check if user is logged in
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+
+
+  logout() {
+    
+    localStorage.removeItem('token');
+    localStorage.removeItem('userData');
+    
+   
+    // Navigate to login/first page
+    this.router.navigate(['/first-page']);
   }
 
 

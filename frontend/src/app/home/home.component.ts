@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NavbarComponent } from '../navbar/navbar.component';
 
@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   sectionIndex: number = 0;
   isBrowser: boolean;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object,private router:Router) {
     this.isBrowser = isPlatformBrowser(platformId); 
   }
 
@@ -38,6 +38,11 @@ export class HomeComponent implements OnInit {
       setActiveSection();
 
       setInterval(setActiveSection, 5000);
+    }
+    const user=localStorage.getItem("user")
+    const token=localStorage.getItem("authToken")
+    if(!user && !token){
+      this.router.navigate(['/first-page'])
     }
   }
 }

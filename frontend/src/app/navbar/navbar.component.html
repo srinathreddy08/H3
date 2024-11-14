@@ -21,8 +21,21 @@
     <li><a routerLink="/aboutus" class="nav-link">
       <span class="link-content">About Us</span>
     </a></li>
-    <li><a routerLink="/first-page" class="nav-link logout">
-      <span class="link-content">Log Out</span>
-    </a></li>
+    <li class="profile-dropdown">
+      <button class="nav-link profile-btn" (click)="toggleProfileMenu()">
+        <span class="link-content">Profile</span>
+      </button>
+      <div class="dropdown-menu" [class.show]="isProfileMenuOpen">
+        <a routerLink="/profile" class="dropdown-item">
+          <span class="link-content">View Profile</span>
+        </a>
+        <a routerLink="/change-password" class="dropdown-item">
+          <span class="link-content">Change Password</span>
+        </a>
+        <a (click)="logout()" class="dropdown-item logout" style="cursor: pointer;">
+          <span class="link-content">Log Out</span>
+        </a>
+      </div>
+    </li>
   </ul>
 </nav>
