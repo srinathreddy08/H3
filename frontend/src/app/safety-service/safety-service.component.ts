@@ -263,9 +263,9 @@ export class SafetyServiceComponent implements AfterViewInit {
   submitIncident(event: any): void {
     event.preventDefault();
     if (navigator.geolocation) {
-      console.log("inside navigator")
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          console.log("inside geolocation")
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
           let object = {
